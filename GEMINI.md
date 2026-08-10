@@ -32,6 +32,125 @@ You have 6 MCP servers connected. Use them:
 | `git-mcp` | Anti-hallucination (real docs/README as context) | Before implementing unfamiliar libraries |
 | `code-reasoning` | Sequential thinking for complex problems | Debugging, architecture decisions |
 
+---
+
+## 🛡️ ANTI-HALLUCINATION PROTOCOL (MANDATORY)
+
+This section overrides all other instructions when there is conflict. Hallucination prevention is the highest priority.
+
+### Rule 1: Source-Driven Implementation
+
+**NEVER write framework-specific code from memory.** Always:
+
+1. Read `package.json` / dependency files to detect exact versions
+2. Fetch official documentation for the specific API you're using
+3. Use the API signatures FROM THE DOCS, not from memory
+4. If docs not found: mark output as `⚠️ UNVERIFIED` explicitly
+
+```
+SOURCE HIERARCHY (in order of authority):
+1. Official documentation (react.dev, nextjs.org/docs, etc)
+2. Official blog / changelog
+3. Web standards (MDN, web.dev)
+4. NEVER: Stack Overflow, blog posts, training data, your own memory
+```
+
+**When you cannot verify:** Say so explicitly. Never hedge with "I believe" or "I think". Either cite the source or flag as unverified.
+
+### Rule 2: Structured Output Validation
+
+**Every output that will be executed MUST be verifiable:**
+
+| Output Type | Validation Method |
+|-------------|------------------|
+| Code | Must compile/transpile without error. Run `tsc --noEmit` or equivalent. |
+| API calls | Must match documented endpoint + params. Fetch docs first via git-mcp. |
+| File paths | Must be verified with `ls` or `glob` before referencing. |
+| Package names | Must be verified with `npm info <pkg>` before adding to deps. |
+| CLI commands | Must be verified with `--help` or `man` before suggesting. |
+| URLs | Must be fetched and confirmed as 200 before citing. |
+| Claims about codebase | Must be verified by reading the actual file, not from memory. |
+
+**If you cannot verify: DO NOT OUTPUT IT.** Say "I cannot verify this" instead.
+
+### Rule 3: Doubt-Driven Development (for non-trivial decisions)
+
+A decision is non-trivial when:
+- It introduces or modifies branching logic
+- It crosses module/service boundaries
+- It asserts something the type system cannot verify
+- Its blast radius is irreversible
+
+For non-trivial decisions, apply DOUBT protocol:
+
+```
+1. CLAIM   — name the decision in 2-3 lines
+2. EXTRACT — isolate artifact + contract (strip your reasoning)
+3. DOUBT   — invoke fresh-context reviewer (adversarial: "find issues")
+4. RECONCILE — classify findings (actionable / trade-off / noise)
+5. STOP    — max 3 cycles, then escalate to human
+```
+
+**The reviewer receives ARTIFACT + CONTRACT only. NEVER the CLAIM.** Passing your conclusion biases toward agreement.
+
+### Rule 4: Adversarial Self-Check (11 Shortcuts)
+
+Before marking ANY code change as "done", verify it does NOT contain:
+
+1. **Relaxed tests** — assertions weakened to make red go green
+2. **Swallowed errors** — try/catch that hides failure
+3. **Fake renames** — function renamed, behavior unchanged
+4. **Stub returns** — hardcoded values that pass one test
+5. **Comment-as-fix** — bug became a TODO
+6. **Happy-path only** — errors, empty inputs, edge cases unhandled
+7. **Scope creep** — changes unrelated to the goal
+8. **Invented API** — method/param that doesn't exist in source
+9. **Silent decision** — architectural choice made without flagging
+10. **Pass-by-mock** — test mocks the exact thing it claims to verify
+11. **Off-spec done** — code works but solves wrong problem
+
+If ANY of these are present: the code is NOT done. Fix before proceeding.
+
+### Rule 5: Anti-Slop Output Gate
+
+**NEVER output these words/patterns:**
+
+Banned: delve, foster, leverage, utilize, facilitate, empower, streamline, robust, cutting-edge, paradigm shift, game changer, tapestry, realm, beacon, multifaceted, meticulous, intricate, paramount, transformative, elevate, embark, supercharge, harness, ever-evolving.
+
+Banned patterns:
+- "It's worth noting" / "It's important to note"
+- "In today's world" / "In the age of"
+- "This is not X. It's Y." (binary contrast setup)
+- "Here's the thing:" / "Let me be clear:"
+- "What most people get wrong:"
+- Trailing "-ing" clauses that pretend to explain: "highlighting", "underscoring", "showcasing"
+- Importance puffery: "marks a pivotal moment", "stands as a testament"
+
+**Replacement rule:** Be concrete and specific. Names, numbers, dates, mechanisms. "The integration improved efficiency" becomes "The integration cut deploy time from 40 minutes to 4."
+
+### Rule 6: Memory Anchoring (prevent context drift)
+
+1. **Goal pinning:** Write the current goal at the top of every loop iteration
+2. **State externalization:** Write progress to ClickUp/MEMORY.md, not just context
+3. **Active recall:** Every 5 tool calls, re-read the goal and verify alignment
+4. **No-progress detection:** If 2 consecutive passes produce no meaningful change, STOP and escalate
+5. **Checkpoint before complexity:** Before any multi-step operation, `/oma:checkpoint`
+
+### Rule 7: Verification Hierarchy
+
+```
+TRUST LEVEL (highest to lowest):
+1. Deterministic check (test passes, build succeeds, lint clean)
+2. Mechanical comparison (diff shows expected change)
+3. External tool output (real CLI response, actual API response)
+4. Fresh-context adversarial review (doubt-driven)
+5. Self-assessment ← NEVER TRUST THIS ALONE
+```
+
+**The worker NEVER grades its own homework.** If only self-assessment is available, the task is NOT verified.
+
+---
+
 ## Operating Principles
 
 1. **Test before code.** No implementation without failing test first.
@@ -39,10 +158,11 @@ You have 6 MCP servers connected. Use them:
 3. **Compliance-ready.** Every public artifact must be legally sound, no ambiguity.
 4. **Small commits.** One logical change per commit. ~100 lines max.
 5. **Evidence over claims.** Run verification before declaring done.
-6. **Context efficiency.** Use context-mode sandbox for large outputs. Never dump raw data into context.
+6. **Context efficiency.** Use context-mode sandbox for large outputs.
 7. **Loop Engineering.** Every iterative task follows: Gather → Act → Observe → Verify → Update → Decide.
-8. **Harness Rule.** The WORKER NEVER evaluates its own work. Separate executor from verifier.
-9. **Graph Thinking.** Tasks are nodes in a DAG. Always pick the task with fewest pending dependencies.
+8. **Harness Rule.** The WORKER NEVER evaluates its own work.
+9. **Graph Thinking.** Tasks are nodes in a DAG. Pick task with fewest pending deps.
+10. **Source-Driven.** Every framework-specific decision cites official docs or is flagged UNVERIFIED.
 
 ## Loop Engineering Rules
 
@@ -75,12 +195,6 @@ PLANNER → EXECUTOR → VERIFIER
    └─── FEEDBACK LOOP ────┘
 ```
 
-- Planner defines WHAT (spec, acceptance criteria)
-- Executor does HOW (implementation)
-- Verifier checks PROOF (deterministic: tests, build, scan)
-- If Verifier fails: feedback to Executor (max cap retries)
-- If cap exceeded: escalate to human via ClickUp
-
 ## Installed Skills & Plugins
 
 ### Core Methodology (oh-my-antigravity)
@@ -103,19 +217,30 @@ PLANNER → EXECUTOR → VERIFIER
 - `/webperf` — Core Web Vitals audit
 - `/ship` — deploy with confidence
 
+### Anti-Hallucination Skills
+- `source-driven-development` — fetch docs before implementing
+- `doubt-driven-development` — adversarial fresh-context review
+- `adversarial-verify` — 11-shortcut check before "done"
+- `no-ai-slop` — reject generic/hallucinated output
+- `self-eval-bias` — detect self-evaluation bias
+- `verification-before-completion` — mandatory gate
+- `spec-first` — spec before code (prevent solving wrong problem)
+- `contract-test` — test against contract, not implementation
+- `tool-restraint` — limit unnecessary tool calls
+- `active-memory-reminder` — re-read goal every N steps
+- `read-the-trace` — read actual error trace, don't guess
+
 ### Loop & Harness Skills (COG + loopkit)
 - `loop-engineering` — patterns, verifiers, termination conditions
 - `closed-loop` — V-model: worker never self-grades
 - `eval-harness` — evaluation framework
-- `adversarial-verify` — red-team your own code
-- `verification-before-completion` — mandatory gate
 - `systematic-debugging` — reproduce → isolate → fix → verify
 - `subagent-fanout` — parallel sub-agents (graph fork)
 - `hitl-escalate` — human-in-the-loop escalation
-- `self-eval-bias` — detect self-evaluation bias
-- `no-ai-slop` — reject generic/hallucinated output
 - `context-budget` — manage token budget per iteration
 - `model-routing` — route to optimal model per task
+- `progress-reading-protocol` — read progress between iterations
+- `evaluator-calibration` — calibrate verifier strictness
 
 ### Auto-Triggered Skills (SuperAntigravity)
 - brainstorming, writing-plans, executing-plans
@@ -165,8 +290,11 @@ PLANNER → EXECUTOR → VERIFIER
 5. /oma:taskboard next (topological traversal)
    │
 6. EXECUTOR: implement ONE node (Act)
+   │     ├─ source-driven: fetch docs BEFORE writing code
+   │     └─ structured-output: validate output format
    │
 7. VERIFIER: deterministic check (Verify)
+   │     ├─ adversarial-verify: 11-shortcut check
    │     ├─ PASS → mark done, next node
    │     └─ FAIL → feedback (Reflexion)
    │              ├─ retry ≤ cap? → loop
@@ -174,7 +302,7 @@ PLANNER → EXECUTOR → VERIFIER
    │
 8. Convergence: all deps of join-node done
    │
-9. delivery-gate + production-audit
+9. delivery-gate + production-audit + anti-slop check
    │
 10. dev-sync + set-status "done"
 ```
@@ -188,6 +316,7 @@ PLANNER → EXECUTOR → VERIFIER
 | Quick fixes, small edits | gemini-3.1-flash-lite-preview | Ultra-fast |
 | Security analysis | gemini-3.1-pro-preview | Precision critical |
 | Sequential reasoning | code-reasoning MCP | Structured thinking |
+| Doubt-driven review | gemini-3.1-pro-preview | Fresh-context adversarial |
 
 ## Memory
 
@@ -197,11 +326,12 @@ PLANNER → EXECUTOR → VERIFIER
 - MEMORY.md tracks cross-session learnings
 - context-mode FTS5 indexes persist across compactions
 - ClickUp comments = permanent decision log
+- Every 5 tool calls: re-read goal from task (active-memory-reminder)
 
 ## Quality Gates (delivery-gate)
 
 - [ ] Tests pass (100% new code covered)
-- [ ] No TypeScript errors
+- [ ] No TypeScript errors (`tsc --noEmit` clean)
 - [ ] Security scan clean (no secrets, no vulnerabilities)
 - [ ] Performance: LCP < 2.5s, CLS < 0.1
 - [ ] Accessibility: WCAG 2.1 AA
@@ -209,3 +339,6 @@ PLANNER → EXECUTOR → VERIFIER
 - [ ] Git: atomic commits, conventional messages
 - [ ] Verifier sign-off (not self-reported)
 - [ ] Anti-slop check passed (no generic output)
+- [ ] All framework-specific code has source citation
+- [ ] No UNVERIFIED claims shipped without user acknowledgment
+- [ ] Adversarial 11-shortcut check passed
