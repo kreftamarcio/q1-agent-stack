@@ -3,15 +3,42 @@
     "context-mode": {
       "command": "context-mode"
     },
-    "clickup-agent": {
+    "clickup-dev": {
       "command": "clickup-agent",
       "args": ["mcp"]
+    },
+    "clickup-context": {
+      "command": "npx",
+      "args": ["@hauptsachenet/clickup-mcp"],
+      "env": {
+        "CLICKUP_API_KEY": "${CLICKUP_API_KEY}",
+        "CLICKUP_PRIMARY_LANGUAGE": "pt-BR",
+        "MAX_RESPONSE_SIZE_MB": "5"
+      }
+    },
+    "github": {
+      "command": "github-mcp-server",
+      "args": ["--toolsets", "repos,issues,pull_requests,code_security"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GH_TOKEN}"
+      }
+    },
+    "git-mcp": {
+      "command": "npx",
+      "args": ["-y", "git-mcp"],
+      "env": {
+        "GITHUB_TOKEN": "${GH_TOKEN}"
+      }
+    },
+    "code-reasoning": {
+      "command": "npx",
+      "args": ["-y", "@mettamatt/code-reasoning"]
     }
   },
   "hooks": {
     "BeforeTool": [
       {
-        "matcher": "run_shell_command|read_file|read_many_files|grep_search|search_file_content|web_fetch|activate_skill|mcp__plugin_context-mode|mcp__context-mode|mcp__(?!.*context-mode)",
+        "matcher": "run_shell_command|read_file|read_many_files|grep_search|search_file_content|web_fetch|activate_skill|mcp__(?!.*context-mode)",
         "hooks": [{ "type": "command", "command": "context-mode hook gemini-cli beforetool" }]
       }
     ],
