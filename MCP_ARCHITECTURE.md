@@ -3,6 +3,26 @@
 > Model Context Protocol: a norma que conecta Antigravity + Gemini ao ClickUp e GitHub.
 > Todos os MCP servers rodam via Stdio (subprocesso local) ou SSE (remoto).
 
+## Auditoria de Licenças
+
+| Repositório | Licença | Uso Comercial |
+|-------------|---------|---------------|
+| oh-my-antigravity | MIT | ✅ Livre |
+| agent-skills (Addy Osmani) | MIT | ✅ Livre |
+| SuperAntigravity | MIT | ✅ Livre |
+| ECC (Everything Claude Code) | MIT | ✅ Livre |
+| antigravity-skills vault | MIT | ✅ Livre |
+| Superpowers (obra) | MIT | ✅ Livre |
+| Ruflo (agent swarms) | MIT | ✅ Livre |
+| clickup-agentic-native | Apache 2.0 | ✅ Livre (manter NOTICE) |
+| github-mcp-server (oficial) | MIT | ✅ Livre |
+| hauptsacheNet/clickup-mcp | MIT | ✅ Livre |
+| code-reasoning | MIT | ✅ Livre |
+| git-mcp | MIT | ✅ Livre |
+| context-mode | ELv2 | ⚠️ OK para uso interno, proibido revender como SaaS |
+
+---
+
 ## Como o Gemini Processa MCP Tools
 
 1. **Namespace:** Cada tool vira `mcp_{serverName}_{toolName}` (max 63 chars)
@@ -80,7 +100,7 @@ Gemini 3.x Pro tem intolerância a:
 
 ## MCP Servers: GitHub
 
-### Server Oficial: [github/github-mcp-server](https://github.com/github/github-mcp-server) (32K⭐)
+### Server Oficial: [github/github-mcp-server](https://github.com/github/github-mcp-server) (32K⭐) — MIT
 
 **Instalação local (Docker):**
 ```bash
@@ -118,24 +138,25 @@ go install github.com/github/github-mcp-server@latest
 }
 ```
 
-### Complementares GitHub
+### Complementares GitHub (todos MIT)
 
-| Server | Stars | Função |
-|--------|-------|--------|
-| [git-mcp](https://github.com/idosal/git-mcp) | 8.3K | Elimina alucinações de código: MCP remoto pra qualquer repo |
-| [jcodemunch-mcp](https://github.com/jgravelle/jcodemunch-mcp) | 2.5K | Corta 95% tokens em code exploration via tree-sitter AST |
-| [codedb](https://github.com/justrach/codedb) | 1.3K | Code intelligence em Zig: tree, outline, symbol, search, edit |
-| [agentshield](https://github.com/affaan-m/agentshield) | 1K | Scanner de segurança para configs de agentes e MCP servers |
+| Server | Stars | Licença | Função |
+|--------|-------|---------|--------|
+| [git-mcp](https://github.com/idosal/git-mcp) | 8.3K | **MIT** | MCP remoto pra qualquer repo GitHub. Elimina alucinações de código fornecendo docs/README reais como contexto. Zero config, funciona como URL. |
+| [codedb](https://github.com/justrach/codedb) | 1.3K | **MIT** | Code intelligence em Zig: tree, outline, symbol, search, edit, deps, snapshot. Compatível com Gemini. |
+| [agentshield](https://github.com/affaan-m/agentshield) | 1K | **MIT** | Scanner de segurança para configs de agentes e MCP servers. GitHub Action incluso. |
+
+> ❌ **REMOVIDO:** jcodemunch-mcp (licença comercial, uso proibido sem pagamento para freelancers/empresas)
 
 ---
 
 ## MCP Servers: Raciocínio e Thinking
 
-| Server | Stars | Função |
-|--------|-------|--------|
-| [code-reasoning](https://github.com/mettamatt/code-reasoning) | 257 | Fork do Sequential Thinking focado em code reasoning |
-| [sequential-thinking-skill](https://github.com/thedotmack/sequential-thinking-skill) | 35 | Sequential Thinking como skill (sem MCP extra) |
-| [deepthinking-mcp](https://github.com/danielsimonjr/deepthinking-mcp) | 3 | Combina sequential + Shannon + mathematical reasoning |
+| Server | Stars | Licença | Função |
+|--------|-------|---------|--------|
+| [code-reasoning](https://github.com/mettamatt/code-reasoning) | 257 | **MIT** | Fork do Sequential Thinking focado em code reasoning |
+| [sequential-thinking-skill](https://github.com/thedotmack/sequential-thinking-skill) | 35 | MIT | Sequential Thinking como skill (sem MCP extra) |
+| [deepthinking-mcp](https://github.com/danielsimonjr/deepthinking-mcp) | 3 | MIT | Combina sequential + Shannon + mathematical reasoning |
 
 ---
 
@@ -176,16 +197,16 @@ go install github.com/github/github-mcp-server@latest
         "GITHUB_PERSONAL_ACCESS_TOKEN": "${GH_TOKEN}"
       }
     },
-    "code-reasoning": {
+    "git-mcp": {
       "command": "npx",
-      "args": ["-y", "@mettamatt/code-reasoning"]
-    },
-    "jcodemunch": {
-      "command": "uvx",
-      "args": ["jcodemunch-mcp"],
+      "args": ["-y", "git-mcp"],
       "env": {
         "GITHUB_TOKEN": "${GH_TOKEN}"
       }
+    },
+    "code-reasoning": {
+      "command": "npx",
+      "args": ["-y", "@mettamatt/code-reasoning"]
     }
   },
   "hooks": {
@@ -230,7 +251,7 @@ go install github.com/github/github-mcp-server@latest
 ┌────────────────────────────────────────────────────────────┐
 │  3. MAPEAMENTO NO CÓDIGO                                    │
 │  github MCP: toolset=repos (read-only)                     │
-│  jcodemunch: tree-sitter AST (95% token savings)            │
+│  git-mcp: docs/README reais como contexto (anti-alucinação)│
 │  code-reasoning: sequential thinking sobre o bug            │
 └────────────────────────────────────────────────────────────┘
                               │
@@ -260,7 +281,7 @@ go install github.com/github/github-mcp-server@latest
 | API | Limite | Mitigação |
 |-----|--------|----------|
 | ClickUp | 100 req/min | Batch operations, instruções no GEMINI.md pra limitar iterações |
-| GitHub | 5000 req/h (PAT) | jcodemunch (tree-sitter local), cache via context-mode |
+| GitHub | 5000 req/h (PAT) | git-mcp (contexto remoto sem clone), cache via context-mode |
 | Gemini API | Varia por tier | Model routing (Pro→Flash→Lite), context-mode (98% reduction) |
 
 ---
@@ -288,4 +309,5 @@ GITHUB_PERSONAL_ACCESS_TOKEN=ghp_...
 | Commands | **122+** |
 | Agents | **74+** |
 | MCP Tools | **42+** |
-| MCP Servers | **6** (context-mode, clickup-dev, clickup-context, github, code-reasoning, jcodemunch) |
+| MCP Servers | **6** (context-mode, clickup-dev, clickup-context, github, git-mcp, code-reasoning) |
+| Licenças | **100% legal** (MIT/Apache 2.0/ELv2 uso interno) |
