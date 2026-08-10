@@ -4,10 +4,37 @@
       "command": "context-mode",
       "args": []
     },
-    "clickup-agent": {
+    "clickup-dev": {
       "command": "clickup-agent",
       "args": ["mcp"],
       "env": {}
+    },
+    "clickup-context": {
+      "command": "npx",
+      "args": ["@hauptsachenet/clickup-mcp"],
+      "env": {
+        "CLICKUP_API_KEY": "${CLICKUP_API_KEY}",
+        "CLICKUP_PRIMARY_LANGUAGE": "pt-BR",
+        "MAX_RESPONSE_SIZE_MB": "5"
+      }
+    },
+    "github": {
+      "command": "github-mcp-server",
+      "args": ["--toolsets", "repos,issues,pull_requests,code_security"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GH_TOKEN}"
+      }
+    },
+    "git-mcp": {
+      "command": "npx",
+      "args": ["-y", "git-mcp"],
+      "env": {
+        "GITHUB_TOKEN": "${GH_TOKEN}"
+      }
+    },
+    "code-reasoning": {
+      "command": "npx",
+      "args": ["-y", "@mettamatt/code-reasoning"]
     }
   }
 }
