@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "context-mode": {
+      "command": "context-mode",
+      "args": []
+    },
+    "clickup-agent": {
+      "command": "clickup-agent",
+      "args": ["mcp"],
+      "env": {}
+    }
+  }
+}

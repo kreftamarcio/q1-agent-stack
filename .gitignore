@@ -1,0 +1,15 @@
+# Secrets
+.env
+.env.local
+*.key
+
+# Runtime state
+.omg/
+.context-mode/
+node_modules/
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
