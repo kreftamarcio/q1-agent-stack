@@ -1,141 +1,92 @@
 # Q1 Agent Stack
 
-> Complete AI agent infrastructure for global-level software development.
-> Integrates **Antigravity IDE (Gemini)** + **ClickUp Brain** + **Vercel** + **GitHub**.
+Infraestrutura de desenvolvimento assistido por IA. Integra Antigravity IDE (Gemini) + ClickUp Brain + Vercel + GitHub via MCP.
 
-## Architecture
+## O que é
+
+Repo de configuração e documentação que unifica:
+- 6 MCP servers operando em paralelo
+- ~70 skills curadas de 6 frameworks open-source
+- 6 skills anti-alucinação customizadas
+- 3 agentes em closed-loop (Developer → Auditor → Debugger)
+- Workflow dual-AI documentado
+
+## Arquitetura
 
 ```
-┌───────────────────────────────────────────────────────────┐
-│              ANTIGRAVITY IDE (Gemini Engine)               │
-│                                                           │
-│  Plugins:                                                  │
-│  ├─ oh-my-antigravity (14 agents, 30+ commands)            │
-│  ├─ agent-skills (24 SDLC skills by Addy Osmani)           │
-│  ├─ SuperAntigravity (19 auto-trigger + TDD)               │
-│  ├─ vercel-plugin (32 skills + 3 agents)                   │
-│  ├─ antigravity-skills vault (300+ domain skills)           │
-│  ├─ ECC skills (75 cherry-picked)                          │
-│  ├─ COG + loopkit (66 harness/loop skills)                  │
-│  └─ 6 anti-hallucination custom skills                     │
-│                                                           │
-│  3-Agent Loop:                                             │
-│  DEVELOPER (Flash) → AUDITOR (Pro) → DEBUGGER (Pro)        │
-│       ↑                    │ pass         │               │
-│       └─── fix ready ─────┘─────────────┘               │
-│                                                           │
-│  MCP Servers (6):                                          │
-│  ┌───────────────┐ ┌───────────────┐ ┌───────────────┐  │
-│  │ context-mode │ │ clickup-dev   │ │clickup-context│  │
-│  │ (98% saving)│ │ (task ops)    │ │ (rich read)   │  │
-│  └───────────────┘ └───────────────┘ └───────────────┘  │
-│  ┌───────────────┐ ┌───────────────┐ ┌───────────────┐  │
-│  │ github      │ │ git-mcp       │ │ code-reason  │  │
-│  │ (code+PRs)  │ │(anti-halluc.) │ │ (thinking)   │  │
-│  └───────────────┘ └───────────────┘ └───────────────┘  │
-│                                                           │
-│  Model Routing:                                            │
-│  Pro (planning/audit) │ Flash (code) │ Lite (quick)       │
-└───────────────────────────────────────────────────────────┘
-            │ (same data)              │ (deploys)
-            ▼                           ▼
-┌───────────────────────┐  ┌───────────────────────┐
-│  CLICKUP BRAIN          │  │  VERCEL                  │
-│  (gestão, triagem,      │  │  (deploy, CDN, edge,     │
-│   sprint planning)      │  │   storage, AI gateway)   │
-└───────────────────────┘  └───────────────────────┘
+Antigravity IDE (Gemini)
+  ├─ 3-Agent Loop: Developer (Flash) → Auditor (Pro) → Debugger (Pro)
+  ├─ 6 MCP Servers:
+  │   ├─ context-mode (redução de contexto)
+  │   ├─ clickup-dev (operações em tasks)
+  │   ├─ clickup-context (leitura rica)
+  │   ├─ github (código + PRs)
+  │   ├─ git-mcp (anti-alucinação via docs reais)
+  │   └─ code-reasoning (raciocínio sequencial)
+  ├─ Model Routing: Pro (planning) | Flash (code) | Lite (quick)
+  └─ Skills instaladas de:
+      oh-my-antigravity, agent-skills, SuperAntigravity,
+      ECC, antigravity-skills vault, COG/loopkit
+
+ClickUp Brain: gestão, triagem, sprint planning
+Vercel: deploy, CDN, edge
 ```
 
-## Numbers (verified)
+## Inventário real
 
-| Métrica | Total |
-|---------|-------|
-| Skills | **321+** |
-| Commands | **126+** |
-| Agents | **80+** (77 + 3 custom loop agents) |
-| MCP Servers | **6** |
-| MCP Tools | **42+** |
-| Install Scripts | **4** |
-| Custom Loop Agents | **3** (developer, auditor, debugger) |
-| Anti-Hallucination Rules | **7** (in GEMINI.md) |
-| Anti-Hallucination Skills | **6** (custom SKILL.md) |
+| Métrica | Total verificado |
+|---------|------------------|
+| Skills instaladas | ~70 (de 6 fontes) |
+| Skills customizadas | 6 (anti-alucinação) |
+| Agentes nos frameworks | ~29 (oh-my: 14, agent-skills: 4, Super: 8, custom: 3) |
+| Agentes extras (ECC + Vercel) | ~24 |
+| MCP Servers | 6 |
+| MCP Tools | 42+ |
+| Install Scripts | 4 |
+| Comandos disponíveis | ~54 |
 
-## Quick Install
+**Nota:** os frameworks instalados disponibilizam 300+ skills no total, mas ~70 estão efetivamente configuradas e em uso.
+
+## Conteúdo criado por mim (não curadoria)
+
+- `skills/` — 6 skills anti-alucinação (adversarial-11, doubt-driven, source-driven, memory-anchor, structured-output, clickup-brain)
+- `agents/` — 3 configs de agente (developer.md, auditor.md, debugger.md)
+- `GEMINI.md` — Config master com regras anti-alucinação e loop
+- `MCP_ARCHITECTURE.md` — Documentação da camada MCP
+- `CLICKUP_WORKFLOW.md` — Workflow diário
+- `install*.sh` — 4 scripts de instalação
+- Toda a documentação de integração
+
+## Curadoria (frameworks de terceiros, todos MIT/Apache)
+
+| Fonte | Licença | O que fornece |
+|-------|---------|---------------|
+| oh-my-antigravity | MIT | 11 skills, 14 agentes, 30+ comandos |
+| agent-skills (Addy Osmani) | MIT | 24 skills SDLC, 4 agentes |
+| SuperAntigravity | MIT | 19 auto-triggered skills, 8 agentes |
+| ECC | MIT | 75 skills cherry-picked, 21 agentes |
+| antigravity-skills vault | MIT | ~10 bundles instalados |
+| context-mode | ELv2 | 11 MCP tools (uso interno OK) |
+
+## Princípios de engenharia
+
+1. **Closed-loop**: agente nunca avalia próprio trabalho (Developer ≠ Auditor)
+2. **Anti-alucinação**: source-driven, doubt-driven, adversarial-11, structured output
+3. **DAG thinking**: tasks como nós de grafo, travessia topológica
+4. **Context economy**: context-mode reduz consumo de tokens via indexação FTS5
+
+## Install
 
 ```bash
 git clone https://github.com/kreftamarcio/q1-agent-stack.git
 cd q1-agent-stack
 chmod +x *.sh
-
-# Full install (all components)
-./install.sh              # Core: 9 steps (includes loop/harness)
-./install-ecc.sh          # ECC: 75 skills + 21 agents
-./install-vercel.sh       # Vercel: 41 skills + 3 agents
-
-# Environment
-cp .env.example .env      # Fill in your tokens
+./install.sh
+./install-ecc.sh
+./install-vercel.sh
+cp .env.example .env
 ```
 
-## Files
-
-| File | Purpose |
-|------|--------|
-| `GEMINI.md` | Master agent config (anti-hallucination + loop rules) |
-| `settings.json` | 6 MCP servers + hooks (copy to ~/.gemini/) |
-| `mcp_config.json` | Standalone MCP config (no hooks) |
-| `.env.example` | Required environment variables |
-| `install.sh` | Core installer (9 steps) |
-| `install-ecc.sh` | ECC skills installer |
-| `install-loop-harness.sh` | COG + loopkit skills |
-| `install-vercel.sh` | Vercel plugin + labs skills |
-| `agents/developer.md` | Developer agent (EXECUTOR) |
-| `agents/auditor.md` | Auditor agent (VERIFIER) |
-| `agents/debugger.md` | Debugger agent (REFACTORER) |
-| `skills/` | 6 custom anti-hallucination SKILL.md files |
-| `SKILLS_MANIFEST.md` | Complete inventory |
-| `MCP_ARCHITECTURE.md` | MCP layer documentation |
-| `ECC_INTEGRATION.md` | ECC skills guide |
-| `LOOP_HARNESS_GRAFOS.md` | Loop + Harness + Graph engineering |
-| `VERCEL_SKILLS.md` | Vercel ecosystem guide |
-| `CLICKUP_WORKFLOW.md` | Daily workflow guide |
-| `MEMORY.md` | Cross-session learnings |
-
-## Engineering Principles
-
-1. **Loop Engineering:** Gather → Act → Observe → Verify → Update → Decide
-2. **Harness (V-Model):** Worker NEVER grades own work
-3. **Graph Thinking:** Tasks = DAG nodes, topological traversal
-4. **Anti-Hallucination:** Source-driven, doubt-driven, adversarial-11, structured output
-5. **3-Agent Loop:** Developer → Auditor → Debugger (closed loop)
-
-## Dual-AI Workflow
-
-- **Antigravity (Gemini):** Code, implementation, deploy, TDD, security
-- **ClickUp Brain:** Gestão, triagem, sprint planning, task search, decisions
-- **Both operate on the same ClickUp workspace data via MCP**
-
-## Sources & Licenses
-
-| Source | License | Status |
-|--------|---------|--------|
-| oh-my-antigravity | MIT | ✅ |
-| agent-skills (Addy Osmani) | MIT | ✅ |
-| SuperAntigravity | MIT | ✅ |
-| ECC | MIT | ✅ |
-| antigravity-skills vault | MIT | ✅ |
-| Superpowers (obra) | MIT | ✅ |
-| Ruflo (agent swarms) | MIT | ✅ |
-| clickup-agentic-native | Apache 2.0 | ✅ |
-| github-mcp-server | MIT | ✅ |
-| hauptsacheNet/clickup-mcp | MIT | ✅ |
-| git-mcp | MIT | ✅ |
-| code-reasoning | MIT | ✅ |
-| vercel-plugin | Apache 2.0 | ✅ |
-| vercel-labs/agent-skills | MIT | ✅ |
-| COG second-brain | MIT | ✅ |
-| loopkit | MIT | ✅ |
-| context-mode | ELv2 | ⚠️ OK uso interno |
-
-## License
+## Licença
 
 MIT
