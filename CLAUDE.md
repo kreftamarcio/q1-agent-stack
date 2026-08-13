@@ -9,7 +9,7 @@ Regras compartilhadas: ver **ENGINEERING.md**
 
 ## Stack
 
-TypeScript strict, Next.js 15, React 19, Supabase, Vercel, n8n, Zod.
+TypeScript strict, Next.js 15, React 19, PostgreSQL (Prisma), Vercel, n8n, Zod.
 
 ---
 
@@ -52,3 +52,14 @@ Conforme o contexto satura, começa a ignorar constraints deste arquivo.
 - Goal pinning a cada 10 tool calls: reler este arquivo + goal atual
 - Externalizar estado em MEMORY.md ou ClickUp comment
 - Checkpoint antes de operações multi-step
+
+---
+
+## Deploy
+
+Todos os projetos vão pro ar via **Vercel**. Usar skills de deploy:
+- `deployments-cicd` pra pipeline
+- `vercel-functions` pra Edge/Serverless
+- `vercel-firewall` pra segurança
+
+Ver `VERCEL_SKILLS.md` e `./install-vercel.sh`.
