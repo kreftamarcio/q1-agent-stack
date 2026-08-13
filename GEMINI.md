@@ -11,7 +11,7 @@ Regras compartilhadas: ver **ENGINEERING.md**
 
 ## Stack
 
-TypeScript strict, Next.js 15, React 19, Supabase, Vercel, n8n, Zod.
+TypeScript strict, Next.js 15, React 19, PostgreSQL (Prisma), Vercel, n8n, Zod.
 
 ---
 
@@ -24,7 +24,7 @@ TypeScript strict, Next.js 15, React 19, Supabase, Vercel, n8n, Zod.
 | clickup-context | Leitura rica (imagens, busca multilingual) |
 | github | Repos, issues, PRs, security scans |
 | git-mcp | Docs reais como contexto (anti-alucinação) |
-| code-reasoning | Raciocínio sequencial estruturado |
+| code-reasoning | Rac. sequencial estruturado |
 
 ---
 
@@ -75,3 +75,15 @@ Importa de paths que "fazem sentido" mas não existem no projeto.
 - Busca: ctx_search com FTS5 (BM25)
 - Batch: ctx_batch_execute para múltiplos comandos em 1 call
 - Persistência: hooks restauram estado após compactação
+
+---
+
+## Deploy
+
+Todos os projetos vão pro ar via **Vercel**. Usar skills de deploy:
+- `deployments-cicd` pra pipeline
+- `vercel-functions` pra Edge/Serverless
+- `vercel-firewall` pra segurança
+- `vercel-storage` pra KV/Blob/Postgres
+
+Ver `VERCEL_SKILLS.md` e `./install-vercel.sh`.
