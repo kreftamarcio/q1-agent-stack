@@ -9,7 +9,7 @@ Regras compartilhadas: ver **ENGINEERING.md**
 
 ## Stack
 
-TypeScript strict, Next.js 15, React 19, Supabase, Vercel, n8n, Zod.
+TypeScript strict, Next.js 15, React 19, PostgreSQL (Prisma), Vercel, n8n, Zod.
 
 ---
 
@@ -59,9 +59,31 @@ Gera métodos que "parecem" existir mas não existem.
 
 ---
 
-## Agentes
+## Agentes (7)
 
-Ver `agents/` directory. 7 agentes operam em loop:
-- architect (plan) → developer (code) → auditor (verify) → security (gate) → deployer (ship)
-- debugger ativa quando developer falha 2x
-- orchestrator dirige o fluxo
+Todos definidos em `agents/`. Operam em loop orquestrado:
+
+```
+orchestrator (DIRECTOR)
+├─ architect    → Decompor feature em DAG de subtasks
+├─ developer    → Implementar nó com TDD
+├─ auditor      → Verificar adversarialmente (11-check)
+├─ debugger     → Root-cause quando dev falha 2x
+├─ security     → OWASP gate pré-deploy
+└─ deployer     → Pipeline Vercel (preview → production)
+```
+
+Fluxo principal:
+```
+orchestrator → architect → developer → auditor
+                                         │
+                              PASS → security → deployer
+                              FAIL → developer (retry) ou debugger (se 2x fail)
+```
+
+---
+
+## Deploy (Vercel)
+
+Todos os projetos vão pro ar via Vercel. Skills de deploy disponíveis após `./install-vercel.sh`.
+Ver `VERCEL_SKILLS.md` pra o catálogo completo (41 skills + 3 agents + 4 commands).
