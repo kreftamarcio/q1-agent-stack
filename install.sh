@@ -1,4 +1,10 @@
 #!/bin/bash
+# ─────────────────────────────────────────────────────────────────────
+# q1-agent-stack
+# Copyright (C) 2026 Marcio Krefta Fontella <kreftamarcio1@gmail.com>
+# Licensed under AGPL-3.0. See LICENSE file in the project root.
+# https://github.com/kreftamarcio/q1-agent-stack
+# ─────────────────────────────────────────────────────────────────────
 # ============================================================
 # Q1 Digital — Complete Agent Stack Installer
 # Installs: context-mode, oh-my-antigravity, agent-skills,
@@ -22,20 +28,20 @@ NC='\033[0m'
 step() { echo -e "${GREEN}[✓]${NC} $1"; }
 warn() { echo -e "${YELLOW}[!]${NC} $1"; }
 
-# ─── Prerequisites ───────────────────────────────────────────
+# ─── Prerequisites ────────────────────────────────────────────
 echo "Checking prerequisites..."
 command -v node >/dev/null 2>&1 || { echo "Node.js required. Install: https://nodejs.org"; exit 1; }
 command -v npm >/dev/null 2>&1 || { echo "npm required."; exit 1; }
 command -v python3 >/dev/null 2>&1 || { echo "Python 3 required."; exit 1; }
 step "Prerequisites OK (node $(node -v), npm $(npm -v), python3)"
 
-# ─── 1. Context Mode (saves 98% tokens) ─────────────────────
+# ─── 1. Context Mode (saves 98% tokens) ─────────────────
 echo ""
 echo "── Step 1/9: Installing context-mode ──"
 npm install -g context-mode
 step "context-mode installed globally"
 
-# ─── 2. Oh-My-Antigravity (multi-agent orchestration) ────────
+# ─── 2. Oh-My-Antigravity (multi-agent orchestration) ────
 echo ""
 echo "── Step 2/9: Installing oh-my-antigravity ──"
 if command -v agy >/dev/null 2>&1; then
@@ -46,7 +52,7 @@ else
   warn "Then run: agy plugin install https://github.com/Joonghyun-Lee-Frieren/oh-my-antigravity"
 fi
 
-# ─── 3. Agent Skills (Addy Osmani — SDLC lifecycle) ──────────
+# ─── 3. Agent Skills (Addy Osmani — SDLC lifecycle) ──────
 echo ""
 echo "── Step 3/9: Installing agent-skills (Addy Osmani) ──"
 if command -v agy >/dev/null 2>&1; then
@@ -57,13 +63,13 @@ else
   step "agent-skills installed via npx skills"
 fi
 
-# ─── 4. SuperAntigravity (Superpowers + SuperClaude) ─────────
+# ─── 4. SuperAntigravity (Superpowers + SuperClaude) ─────
 echo ""
 echo "── Step 4/9: Installing SuperAntigravity ──"
 curl -fsSL https://raw.githubusercontent.com/derHaken/SuperAntigravity/main/install.sh | bash
 step "SuperAntigravity installed (19 skills + 16 commands + 8 agents)"
 
-# ─── 5. Antigravity Skills Vault (300+ skills) ───────────────
+# ─── 5. Antigravity Skills Vault (300+ skills) ───────────
 echo ""
 echo "── Step 5/9: Installing antigravity-skills vault (core bundles) ──"
 npx @rmyndharis/antigravity-skills install --bundle core-dev
@@ -93,7 +99,7 @@ else
   warn "Then: git clone https://github.com/zenzenzen/clickup-agentic-native.git && uv tool install ."
 fi
 
-# ─── 7. GitHub MCP Server + git-mcp ───────────────────────
+# ─── 7. GitHub MCP Server + git-mcp ─────────────────
 echo ""
 echo "── Step 7/9: Installing GitHub MCP Server + git-mcp ──"
 if command -v go >/dev/null 2>&1; then
