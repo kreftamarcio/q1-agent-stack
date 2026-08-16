@@ -1,4 +1,10 @@
 #!/bin/bash
+# ─────────────────────────────────────────────────────────────────────
+# q1-agent-stack
+# Copyright (C) 2026 Marcio Krefta Fontella <kreftamarcio1@gmail.com>
+# Licensed under AGPL-3.0. See LICENSE file in the project root.
+# https://github.com/kreftamarcio/q1-agent-stack
+# ─────────────────────────────────────────────────────────────────────
 # ============================================================
 # Q1 Digital — ECC Skills Installer for Antigravity + Gemini
 # Cherry-picks the best ECC skills for ClickUp + Gemini workflow
