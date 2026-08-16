@@ -21,7 +21,7 @@ Golden Trio (3 modelos, cada um no que faz melhor):
   └─ Gemini 3.1 Pro: Research, prototipagem, multimodal, triage
 
 7 Agentes em Loop Orquestrado:
-  orchestrator (DIRECTOR) ─────────────────────────
+  orchestrator (DIRECTOR) ─────────────────────
   ├─ architect   (decomposição de features em DAG)
   ├─ developer   (TDD, implementação)
   ├─ auditor     (verificação adversarial, worker ≠ evaluator)
@@ -90,6 +90,21 @@ chmod +x *.sh
 cp .env.example .env      # Configurar API keys
 ```
 
-## Licença
+## License
 
-MIT
+This project is licensed under the **GNU Affero General Public License v3.0** (AGPL-3.0).
+
+This means:
+
+- ✅ You can view, fork, and learn from this code
+- ✅ You can modify and redistribute under the same license
+- ✅ You can use for personal/educational purposes
+- ⚠️ If you deploy this (or a modified version) as a network service, you MUST make the complete source code available to all users
+- ❌ Commercial use without AGPL-3.0 compliance is prohibited
+- ❌ Removing or altering copyright notices is prohibited
+
+For commercial licensing, contact: kreftamarcio1@gmail.com
+
+---
+
+© 2026 Marcio Krefta Fontella — Q1 Digital. All rights reserved under AGPL-3.0.
