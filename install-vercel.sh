@@ -1,4 +1,10 @@
 #!/bin/bash
+# ─────────────────────────────────────────────────────────────────────
+# q1-agent-stack
+# Copyright (C) 2026 Marcio Krefta Fontella <kreftamarcio1@gmail.com>
+# Licensed under AGPL-3.0. See LICENSE file in the project root.
+# https://github.com/kreftamarcio/q1-agent-stack
+# ─────────────────────────────────────────────────────────────────────
 # ============================================================
 # Q1 Digital — Vercel Skills Installer
 # Installs: vercel-plugin (32 skills + 3 agents + 4 commands)
@@ -20,7 +26,6 @@ echo "  (Antigravity + Gemini + ClickUp Integration)"
 echo "══════════════════════════════════════════════════════"
 echo ""
 
-# ─── 1. Vercel Plugin Oficial (32 skills + 3 agents + 4 commands) ───
 echo "── Step 1/2: Installing Vercel Plugin (Official) ──"
 if command -v agy >/dev/null 2>&1; then
   agy plugin install https://github.com/vercel/vercel-plugin
@@ -34,7 +39,6 @@ else
   warn "  git clone https://github.com/vercel/vercel-plugin.git ~/.gemini/plugins/vercel-plugin"
 fi
 
-# ─── 2. Vercel Labs Agent Skills (9 skills via npx skills) ───
 echo ""
 echo "── Step 2/2: Installing vercel-labs/agent-skills ──"
 npx skills add vercel-labs/agent-skills
