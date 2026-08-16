@@ -1,4 +1,10 @@
 #!/bin/bash
+# ─────────────────────────────────────────────────────────────────────
+# q1-agent-stack
+# Copyright (C) 2026 Marcio Krefta Fontella <kreftamarcio1@gmail.com>
+# Licensed under AGPL-3.0. See LICENSE file in the project root.
+# https://github.com/kreftamarcio/q1-agent-stack
+# ─────────────────────────────────────────────────────────────────────
 # ============================================================
 # Q1 Digital — Loop Engineering + Harness + Graph Skills
 # Installs: COG second-brain skills, loopkit skills
@@ -23,7 +29,6 @@ echo ""
 SKILLS_DIR="${HOME}/.gemini/antigravity/skills"
 mkdir -p "$SKILLS_DIR"
 
-# ─── 1. COG Second Brain (Loop Engineering + Closed-Loop Harness) ───
 echo ""
 echo "── Step 1/2: COG Second Brain (loop + harness skills) ──"
 COG_TEMP="/tmp/cog-clone"
@@ -62,7 +67,6 @@ for skill in "${COG_SKILLS[@]}"; do
   fi
 done
 
-# Copy COG GEMINI.md as reference
 if [ -f "$COG_TEMP/GEMINI.md" ]; then
   cp "$COG_TEMP/GEMINI.md" "${HOME}/.gemini/cog-reference-gemini.md"
   step "COG GEMINI.md saved as reference"
@@ -71,7 +75,6 @@ fi
 rm -rf "$COG_TEMP"
 step "COG cleanup done"
 
-# ─── 2. Loopkit (53 battle-tested harness skills) ───
 echo ""
 echo "── Step 2/2: Loopkit (harness + verification skills) ──"
 LOOPKIT_TEMP="/tmp/loopkit-clone"
@@ -149,7 +152,6 @@ for skill in "${LOOPKIT_SKILLS[@]}"; do
   fi
 done
 
-# Copy loopkit AGENTS.md and hooks
 if [ -f "$LOOPKIT_TEMP/AGENTS.md" ]; then
   cp "$LOOPKIT_TEMP/AGENTS.md" "${HOME}/.gemini/loopkit-agents-reference.md"
   step "Loopkit AGENTS.md saved as reference"
