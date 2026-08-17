@@ -1,102 +1,41 @@
 ---
 name: anti-hallucination-doubt-driven
-description: Subjects every non-trivial decision to a fresh-context adversarial review. The reviewer is biased to DISPROVE, not approve. Use when correctness matters more than speed, in unfamiliar code, or when stakes are high.
+description: Structured self-doubt loop (CLAIM -> EXTRACT -> DOUBT -> RECONCILE -> STOP) for non-trivial decisions, architectural choices, and high-risk changes. Capped at 3 cycles. Not for trivial edits.
 ---
 
-# Anti-Hallucination: Doubt-Driven Development
+# Anti-Hallucination: Doubt-Driven Verification
 
-> **A confident answer is NOT a correct answer.**
+> **Confidence is not evidence. Doubt systematically, then stop.**
 
-## When to Apply
+## When to Use
 
-A decision is non-trivial when:
-- It introduces or modifies branching logic
-- It crosses a module or service boundary
-- It asserts something the type system cannot verify
-- Its correctness depends on invisible context
-- Its blast radius is irreversible
+- Architectural decisions, irreversible changes, security-sensitive code
+- NOT for trivial edits (rename, comment, formatting) - doubt loops on trivia are waste
 
-## The 5-Step Doubt Cycle
+## The Loop (max 3 cycles, then STOP with best reconciled answer)
 
-```
-- [ ] Step 1: CLAIM — name the decision (2-3 lines + why it matters)
-- [ ] Step 2: EXTRACT — isolate artifact + contract (strip reasoning)
-- [ ] Step 3: DOUBT — adversarial review ("find issues, do NOT validate")
-- [ ] Step 4: RECONCILE — classify findings against artifact
-- [ ] Step 5: STOP — trivial findings, 3 cycles, or user override
-```
+1. **CLAIM** - state the decision and its justification explicitly
+2. **EXTRACT** - list the assumptions the claim depends on
+3. **DOUBT** - for each assumption: "what evidence would prove this wrong?" Check the cheapest one.
+4. **RECONCILE** - update or keep the claim based on what the checks showed
+5. **STOP** - after 3 cycles or when no assumption remains checkable
 
-### Step 1: CLAIM
+## Worked Example (compact)
 
 ```
-CLAIM: "The auth middleware correctly rejects expired JWTs"
-WHY THIS MATTERS: A bypass here exposes all user data
+CLAIM: "Use Redis for session storage" (justification: multi-instance deploy)
+EXTRACT: A1: app runs multi-instance; A2: sessions must survive restarts; A3: Redis is already provisioned
+DOUBT: A3 -> `grep -ri redis infra/` -> no results -> FALSIFIED
+RECONCILE: Redis adds provisioning cost; A1+A2 hold -> keep decision, add provisioning task explicitly
+STOP: 1 cycle sufficient; remaining assumptions verified
 ```
 
-### Step 2: EXTRACT
+## Integrations (optional)
 
-Give the reviewer ONLY:
-- The artifact (code diff or function)
-- The contract (what it must satisfy)
-
-**DO NOT give:** your reasoning, your CLAIM, your confidence level.
-
-### Step 3: DOUBT
-
-The reviewer prompt MUST be adversarial:
-
-```
-Adversarial review. Find what is WRONG.
-Assume the author is overconfident. Look for:
-- Unstated assumptions
-- Edge cases not handled
-- Hidden coupling or shared state
-- Ways the contract could be violated
-- Failure modes under unexpected input
-
-Do NOT validate. Do NOT summarize. Find issues only.
-
-ARTIFACT: [paste]
-CONTRACT: [paste]
-```
-
-### Step 4: RECONCILE
-
-Classify each finding (precedence order, first match wins):
-
-1. **Contract misread** — reviewer misunderstood the spec → fix contract
-2. **Valid + actionable** — real issue → fix it, re-loop
-3. **Valid trade-off** — real but cost > benefit → document explicitly
-4. **Noise** — correct under context reviewer didn't have → note and move on
-
-### Step 5: STOP
-
-Stop when:
-- Next iteration returns only trivial findings, OR
-- 3 cycles completed (escalate to user), OR
-- User says "ship it"
-
-## Integration with ClickUp
-
-When doubt cycle reveals actionable issues:
-1. `clickup-agent run comment --task-id <ID> --text "Doubt cycle found: [issue]"`
-2. If cannot resolve in 3 cycles: `hitl-escalate` via ClickUp comment + assign
-3. Log trade-off decisions: `clickup-agent run decision-log --task-id <ID>`
+If a task tracker (ClickUp, Linear, Jira) is connected, log the reconciled decision and falsified assumptions as a comment on the task. This section is OPTIONAL - the skill works without any tracker.
 
 ## NEVER
 
-- Trust "I'm confident" as evidence
-- Pass the CLAIM to the reviewer (biases toward agreement)
-- Accept reviewer output as verdict without re-reading artifact
-- Loop >3 cycles without escalating
-- Skip doubt under time pressure on high-stakes code
-
-## Verification
-
-- [ ] Every non-trivial decision was named as a CLAIM
-- [ ] Reviewer received ARTIFACT + CONTRACT only (not CLAIM)
-- [ ] Reviewer prompt was adversarial ("find issues")
-- [ ] Findings classified using precedence order
-- [ ] Stop condition met (trivial / 3 cycles / user override)
-- [ ] Actionable findings fixed
-- [ ] Trade-offs documented in ClickUp decision-log
+- Run more than 3 cycles (analysis paralysis is also a failure mode)
+- Doubt without a checkable falsifier - vague doubt is theater
+- Skip the loop on high-risk changes because "it is obvious"

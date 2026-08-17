@@ -10,12 +10,25 @@ Diretório: `skills/`
 
 | Skill | Propósito |
 |-------|----------|
-| anti-hallucination-adversarial-11 | Checklist de 11 atalhos que agentes usam pra falar "done" sem estar |
-| anti-hallucination-clickup-brain | Regras específicas pra operação via ClickUp Brain |
-| anti-hallucination-doubt-driven | Protocolo CLAIM→EXTRACT→DOUBT→RECONCILE→STOP |
-| anti-hallucination-memory-anchor | Goal pinning, state externalization, no-progress detection |
-| anti-hallucination-source-driven | Forçar verificação de fonte antes de qualquer API call |
-| anti-hallucination-structured-output | Validação de todo output executável |
+| anti-hallucination-source-driven | Docs oficiais antes de qualquer código |
+| anti-hallucination-memory-anchor | Goal pinning + recall a cada N tool calls |
+| anti-hallucination-clickup-brain | Só quando operar via ClickUp |
+| anti-hallucination-structured-output | Validação batch de todos os claims |
+| anti-hallucination-adversarial-11 | Ataque adversarial às claims (claim-attack) |
+| anti-hallucination-doubt-driven | Só decisões não-triviais / alto risco |
+| anti-hallucination-deterministic-gate | Gate determinístico final: tsc, test, lint, build |
+
+## Pipeline das 7 camadas (loop COG)
+
+| Fase | Skill | Papel |
+|------|-------|-------|
+| Gather | `source-driven` | Docs oficiais antes de qualquer código |
+| Act (contínuo) | `memory-anchor` | Goal pinning + recall a cada N tool calls |
+| Act (condicional) | `clickup-brain` | Só quando operar via ClickUp |
+| Verify 1 | `structured-output` | Validação batch de todos os claims |
+| Verify 2 | `adversarial-11` | Ataque adversarial às claims |
+| Verify 3 | `doubt-driven` | Só decisões não-triviais / alto risco |
+| Verify 4 (final) | `deterministic-gate` | Prova mecânica: tsc, test, lint, build |
 
 ---
 
@@ -67,7 +80,7 @@ Estas skills NÃO estão neste repo. São instaladas pelos scripts `install*.sh`
 
 | Categoria | Quantidade |
 |-----------|------------|
-| Skills neste repo | 6 |
+| Skills neste repo | 7 |
 | Skills externas (após install completo) | ~70 configuradas |
 | Agentes nos frameworks | ~29 |
 | Agentes extras (ECC + Vercel) | ~24 |
