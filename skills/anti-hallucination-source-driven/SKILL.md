@@ -1,90 +1,45 @@
 ---
 name: anti-hallucination-source-driven
-description: Forces the agent to fetch and cite official documentation before writing any framework-specific code. Use ALWAYS when implementing with Next.js, React, n8n, Supabase, Prisma, or any library. Prevents invented APIs and deprecated patterns.
+description: Fetch and cite official documentation BEFORE writing code that uses any external API, library, or config format. Every technical claim carries source:line + verbatim quote, or is explicitly marked UNVERIFIED. Use at the Gather phase, before implementation.
 ---
 
-# Anti-Hallucination: Source-Driven Implementation
+# Anti-Hallucination: Source-Driven Development
 
-> **Iron Rule:** NEVER write framework-specific code from memory. Fetch, verify, cite.
+> **If you did not read it this session, you do not know it.**
 
-## When to Use
+## Protocol
 
-- ANY time you write code that uses a library or framework API
-- Before suggesting package installs
-- Before referencing CLI commands
-- Before claiming an API exists or has specific parameters
+1. **Detect the stack**: read `package.json` / lockfiles to get EXACT versions.
+2. **Fetch official docs** for those versions (official docs > changelog > source code > blog posts; never Stack Overflow as primary source).
+3. **Cache per session**: keep a `SOURCES` list; never re-claim from memory what you can re-quote from the cache.
 
-## Process
+## Citation Contract (mandatory)
 
-### Step 1: Detect Stack
-
-Read dependency files to identify EXACT versions:
-```
-package.json → Node/React/Next.js version
-pyproject.toml → Python packages
-```
-
-State what you found:
-```
-STACK DETECTED:
-- Next.js 15.2.0 (from package.json)
-- React 19.1.0
-- Prisma 6.4.0
-→ Fetching relevant docs.
-```
-
-### Step 2: Fetch Official Docs
-
-Use `git-mcp` or direct fetch to get the SPECIFIC page for the API you need.
-
-**Source hierarchy (authority order):**
-1. Official documentation (react.dev, nextjs.org/docs, prisma.io/docs)
-2. Official changelog/blog
-3. Web standards (MDN)
-4. NEVER: Stack Overflow, blog posts, your own memory
-
-**Be precise:**
-```
-BAD:  Fetch the React homepage
-GOOD: Fetch react.dev/reference/react/useActionState
-```
-
-### Step 3: Implement from Docs
-
-- Use API signatures FROM THE DOCS, not from memory
-- If docs show a new way: use the new way
-- If docs deprecate a pattern: don't use the deprecated version
-- If docs don't cover something: FLAG IT
-
-### Step 4: Cite Sources
-
-Every framework-specific pattern gets a citation:
-
-```typescript
-// Next.js 15 App Router - Server Action
-// Source: https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions
-export async function createTask(formData: FormData) {
-  'use server'
-  // ...
-}
-```
-
-### Step 5: Flag Unverified
-
-If you CANNOT find documentation:
+Every technical claim about an external API must be one of:
 
 ```
-⚠️ UNVERIFIED: I could not find official documentation for this
-pattern. This is based on training data and may be outdated.
-Verify before using in production.
+CLAIM: next.config.js supports `serverExternalPackages` since v15
+SOURCE: https://nextjs.org/docs/app/api-reference/config (fetched this session)
+QUOTE: "serverExternalPackages: opt-out specific dependencies..."
 ```
 
-## Verification
+or
 
-- [ ] Framework versions identified from dependency files
-- [ ] Official docs fetched for framework-specific patterns
-- [ ] All sources are official (not blogs/SO/training data)
-- [ ] Code follows documented patterns for detected version
-- [ ] Citations with full URLs included
-- [ ] Anything unverified is explicitly flagged
-- [ ] No deprecated APIs used
+```
+CLAIM: [statement]
+STATUS: UNVERIFIED - docs not fetched. Do not build on this claim.
+```
+
+There is no third option. Paraphrase from training memory = UNVERIFIED.
+
+## Precedence (overlap with sibling skills)
+
+- THIS skill governs how facts ENTER the context (Gather).
+- `structured-output` governs how claims are VALIDATED in batch (Verify).
+- `adversarial-11` governs how claims are ATTACKED (Verify).
+
+## NEVER
+
+- Write code against an API signature you have not quoted this session
+- Cite a version-less doc for version-sensitive behavior
+- Let an UNVERIFIED claim silently become the basis of an implementation
