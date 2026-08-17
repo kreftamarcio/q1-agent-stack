@@ -80,8 +80,8 @@ Worker never evaluates its own work. `developer ≠ auditor`. Every output passe
 
 ### 2. Anti-Hallucination (7 Layers)
 ```
-source-driven → doubt-driven → adversarial-11 → structured-output
-     → memory-anchor → clickup-brain → git-mcp (real docs)
+source-driven → memory-anchor → clickup-brain → structured-output
+     → adversarial-11 → doubt-driven → deterministic-gate
 ```
 
 ### 3. DAG Thinking
@@ -105,7 +105,7 @@ Each model handles what it does best. Cost-aware routing sends cheap tasks to fa
 
 | Category | Count | Examples |
 |----------|-------|----------|
-| Anti-Hallucination | 6 | source-driven, doubt-driven, adversarial-11 |
+| Anti-Hallucination | 7 | source-driven, adversarial-11, deterministic-gate |
 | Loop Engineering | 14 | closed-loop, review-cockpit, ultragoal |
 | Harness & Verification | 53 | eval-harness, adversarial-verify, spec-first |
 | Development | 20 | react-patterns, tdd-workflow, api-design |
