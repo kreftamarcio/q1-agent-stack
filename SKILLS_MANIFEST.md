@@ -17,27 +17,52 @@ Diretório: `skills/`
 | anti-hallucination-source-driven | Forçar verificação de fonte antes de qualquer API call |
 | anti-hallucination-structured-output | Validação de todo output executável |
 
+## Agentes neste repo
+
+Diretório: `agents/`
+
+| Agente | Papel |
+|--------|-------|
+| architect | Decompor feature em DAG |
+| developer | Implementar nó com TDD |
+| auditor | Verificação adversarial |
+| debugger | Corrigir após 2 falhas do dev |
+| security | OWASP gate pré-deploy |
+| deployer | Pipeline Vercel |
+| orchestrator | Travessia do DAG + routing |
+
+## Totais verificáveis neste repo
+
+| Categoria | Quantidade |
+|-----------|------------|
+| Skills | 6 |
+| Agentes | 7 |
+| MCP Servers documentados | 6 |
+| Install scripts | 4 |
+
 ---
 
-## Skills instaladas via scripts (frameworks de terceiros)
+## Skills externas (pós-instalação)
 
-Estas skills NÃO estão neste repo. São instaladas pelos scripts `install*.sh` em diretórios externos do IDE.
+> **Atenção:** os números abaixo dependem de rodar os scripts `install*.sh`
+> numa máquina com o IDE configurado. Eles NÃO são verificáveis apenas
+> clonando este repo.
 
 ### Via `install.sh` (core)
 
 **oh-my-antigravity** (MIT)
 - 11 skills de metodologia ($plan, $execute, $prd, $research, etc.)
-- 14 sub-agentes (oma-architect, oma-planner, oma-executor, etc.)
-- 30+ comandos (/oma:team, /oma:goal, /oma:loop, etc.)
+- 14 sub-agentes
+- 30+ comandos
 
 **agent-skills by Addy Osmani** (MIT)
-- 24 skills cobrindo o SDLC completo (spec → plan → build → test → review → ship)
-- 4 agentes (code-reviewer, test-engineer, security-auditor, web-performance-auditor)
-- 8 comandos (/spec, /plan, /build, /test, /review, /ship, etc.)
+- 24 skills cobrindo o SDLC completo
+- 4 agentes
+- 8 comandos
 
 **SuperAntigravity** (MIT)
-- 19 skills auto-triggered (brainstorming, TDD, debugging, verification, etc.)
-- 8 agentes (code-reviewer, backend-architect, frontend-architect, etc.)
+- 19 skills auto-triggered
+- 8 agentes
 - 16+ comandos
 
 ### Via `install-ecc.sh`
@@ -45,34 +70,14 @@ Estas skills NÃO estão neste repo. São instaladas pelos scripts `install*.sh`
 **ECC (Everything Claude Code)** (MIT)
 - 75 skills cherry-picked de um vault maior
 - 21 agentes
-- Focado em Claude Code mas funciona em qualquer IDE que lê SKILL.md
 
 ### Via `install-loop-harness.sh`
 
 **COG + loopkit** (MIT)
 - 66 skills de loop engineering e harness
-- Patterns: ReAct, Reflexion, Plan-Execute-Verify, Evaluator-Optimizer
-- Tools: adversarial-verify, hitl-escalate, eval-harness, evaluator-calibration
 
 ### Via `install-vercel.sh`
 
 **vercel-plugin + vercel-labs** (Apache 2.0 / MIT)
 - 32 skills focadas em deploy Vercel
 - 3 agentes
-- Skills: nextjs, ai-sdk, vercel-functions, vercel-storage
-
----
-
-## Totais verificados
-
-| Categoria | Quantidade |
-|-----------|------------|
-| Skills neste repo | 6 |
-| Skills externas (após install completo) | ~70 configuradas |
-| Agentes nos frameworks | ~29 |
-| Agentes extras (ECC + Vercel) | ~24 |
-| Comandos disponíveis | ~54 |
-| MCP Servers | 6 |
-| MCP Tools | 42+ |
-
-**Nota:** os frameworks disponibilizam mais skills do que as configuradas. Os números acima refletem o que está efetivamente em uso após rodar todos os install scripts.
