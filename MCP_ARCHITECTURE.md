@@ -61,7 +61,7 @@ Gemini 3.x Pro tem intolerância a:
 | Server | Lang | Melhor Para | Install |
 |--------|------|-------------|--------|
 | [DiversioTeam/clickup-mcp](https://github.com/DiversioTeam/clickup-mcp) | Python | Bulk ops, task chains, time tracking, templates | `uvx clickup-mcp` |
-| [taazkareem/clickup-mcp-server](https://github.com/taazkareem/clickup-mcp-server) | TypeScript | Multi-tenant, 460⭐, workspaces paralelos | `npx clickup-mcp-server` |
+| [taazkareem/clickup-mcp-server](https://github.com/taazkareem/clickup-mcp-server) | TypeScript | Multi-tenant, workspaces paralelos | `npx clickup-mcp-server` |
 
 ### Tier 3: Especialistas
 
@@ -100,7 +100,7 @@ Gemini 3.x Pro tem intolerância a:
 
 ## MCP Servers: GitHub
 
-### Server Oficial: [github/github-mcp-server](https://github.com/github/github-mcp-server) (32K⭐) — MIT
+### Server Oficial: [github/github-mcp-server](https://github.com/github/github-mcp-server) — MIT
 
 **Instalação local (Docker):**
 ```bash
@@ -140,11 +140,11 @@ go install github.com/github/github-mcp-server@latest
 
 ### Complementares GitHub (todos MIT)
 
-| Server | Stars | Licença | Função |
-|--------|-------|---------|--------|
-| [git-mcp](https://github.com/idosal/git-mcp) | 8.3K | **MIT** | MCP remoto pra qualquer repo GitHub. Elimina alucinações de código fornecendo docs/README reais como contexto. Zero config, funciona como URL. |
-| [codedb](https://github.com/justrach/codedb) | 1.3K | **MIT** | Code intelligence em Zig: tree, outline, symbol, search, edit, deps, snapshot. Compatível com Gemini. |
-| [agentshield](https://github.com/affaan-m/agentshield) | 1K | **MIT** | Scanner de segurança para configs de agentes e MCP servers. GitHub Action incluso. |
+| Server | Licença | Função |
+|--------|---------|--------|
+| [git-mcp](https://github.com/idosal/git-mcp) | **MIT** | MCP remoto pra qualquer repo GitHub. Elimina alucinações de código fornecendo docs/README reais como contexto. Zero config, funciona como URL. |
+| [codedb](https://github.com/justrach/codedb) | **MIT** | Code intelligence em Zig: tree, outline, symbol, search, edit, deps, snapshot. Compatível com Gemini. |
+| [agentshield](https://github.com/affaan-m/agentshield) | **MIT** | Scanner de segurança para configs de agentes e MCP servers. GitHub Action incluso. |
 
 > ❌ **REMOVIDO:** jcodemunch-mcp (licença comercial, uso proibido sem pagamento para freelancers/empresas)
 
@@ -152,11 +152,11 @@ go install github.com/github/github-mcp-server@latest
 
 ## MCP Servers: Raciocínio e Thinking
 
-| Server | Stars | Licença | Função |
-|--------|-------|---------|--------|
-| [code-reasoning](https://github.com/mettamatt/code-reasoning) | 257 | **MIT** | Fork do Sequential Thinking focado em code reasoning |
-| [sequential-thinking-skill](https://github.com/thedotmack/sequential-thinking-skill) | 35 | MIT | Sequential Thinking como skill (sem MCP extra) |
-| [deepthinking-mcp](https://github.com/danielsimonjr/deepthinking-mcp) | 3 | MIT | Combina sequential + Shannon + mathematical reasoning |
+| Server | Licença | Função |
+|--------|---------|--------|
+| [code-reasoning](https://github.com/mettamatt/code-reasoning) | **MIT** | Fork do Sequential Thinking focado em code reasoning |
+| [sequential-thinking-skill](https://github.com/thedotmack/sequential-thinking-skill) | MIT | Sequential Thinking como skill (sem MCP extra) |
+| [deepthinking-mcp](https://github.com/danielsimonjr/deepthinking-mcp) | MIT | Combina sequential + Shannon + mathematical reasoning |
 
 ---
 
@@ -244,7 +244,7 @@ go install github.com/github/github-mcp-server@latest
 ┌────────────────────────────────────────────────────────────┐
 │  2. PROCESSAMENTO DE EVIDÊNCIAS                             │
 │  getTaskById (hauptsacheNet: imagens inline, budget)        │
-│  context-mode sandbox: 56KB → 299B                         │
+│  context-mode sandbox: 56KB → 299B (UNVERIFIED)            │
 └────────────────────────────────────────────────────────────┘
                               │
                               ▼
@@ -282,7 +282,7 @@ go install github.com/github/github-mcp-server@latest
 |-----|--------|----------|
 | ClickUp | 100 req/min | Batch operations, instruções no GEMINI.md pra limitar iterações |
 | GitHub | 5000 req/h (PAT) | git-mcp (contexto remoto sem clone), cache via context-mode |
-| Gemini API | Varia por tier | Model routing (Pro→Flash→Lite), context-mode (98% reduction) |
+| Gemini API | Varia por tier | Model routing (Pro→Flash→Lite), context-mode |
 
 ---
 
@@ -301,13 +301,15 @@ GITHUB_PERSONAL_ACCESS_TOKEN=ghp_...
 
 ---
 
-## Inventário Total Atualizado
+## Inventário deste repo
 
-| Métrica | q1-agent-stack |
-|---------|----------------|
-| Skills | **246+** |
-| Commands | **122+** |
-| Agents | **74+** |
-| MCP Tools | **42+** |
-| MCP Servers | **6** (context-mode, clickup-dev, clickup-context, github, git-mcp, code-reasoning) |
-| Licenças | **100% legal** (MIT/Apache 2.0/ELv2 uso interno) |
+| Métrica | Neste repo | Pós-install (UNVERIFIED) |
+|---------|------------|-------------------------|
+| Skills | **6** | ~227 (via install scripts) |
+| Agentes | **7** | ~53 (via install scripts) |
+| MCP Servers | **6** | 6 (mesmos) |
+| Licenças | **100% legal** (MIT/Apache 2.0/ELv2 uso interno) | — |
+
+> Os totais pós-install dependem de rodar `install.sh`, `install-ecc.sh`,
+> `install-loop-harness.sh` e `install-vercel.sh` numa máquina com o IDE
+> configurado. Não são verificáveis apenas clonando este repo.
