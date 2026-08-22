@@ -16,3 +16,7 @@ Mapeamento estruturado das skills ativas, módulos de inteligência e protocolos
 - **`distributed-rate-mesh`**: Mesh distribuído de rate limiting, fallback e circuit breaking multi-provedor.
 - **`self-healing-ci-remediation`**: Recuperação de falhas via AST e saneamento automático de builds.
 - **`semantic-memory-router`**: Roteamento semântico isolado com higienização estrita de dados sensíveis.
+
+## 3. Módulos de Automação n8n & Bridge MCP
+- **`n8n-deterministic-workflow-guard`**: Validação determinística de webhooks, idempotência por hash e circuit breaker para n8n.
+- **`n8n-mcp-agentic-bridge`**: Ponte padronizada entre workflows do n8n e ferramentas MCP com esquemas Zod e sanitização de contexto.
